@@ -106,7 +106,8 @@ var library = (function() {
                     var adjustHour = hour - 12;
                     return String(adjustHour);
                 } else {
-                    return String(hour);
+                    var reAdjustHour = hour +12;
+                    return String(reAdjustHour);
                 }
                     
             },
@@ -174,8 +175,42 @@ var library = (function() {
 					Ordinal: function(){
                         var date = new Date();
                         var num = date.getDate();
-                        var ord = 'st';
-                        return String(num).concat(ord)
+                        switch (num) {
+                            case 1:
+                                var ord = 'st';
+                                return String(num).concat(ord)
+                                break;
+                            case 2:
+                                var ordNd = 'nd';
+                                return String(num).concat(ordNd);
+                                break;
+                             case 3:
+                                var ordRd = 'rd';
+                                return String(num).concat(ordRd);
+                                break;
+                             case 21:
+                                var ordOne = 'st';
+                                return String(num).concat(ordOne);
+                                break;
+                             case 22: 
+                                var ordTwo = 'nd';
+                                return String(num).concat(ordTwo);
+                                break;
+                              case 23:
+                                var ordTrd = 'rd';
+                                return String(num).concat(ordTrd);
+                                break;
+                              case 31:
+                                var ordLast = 'st';
+                                return String(num).concat(ordLast);
+                                break;
+                              default: 
+                                var ordDef = 'th';
+                                return String(num).concat(ordDef);
+                                break;
+                             
+                            
+                        }
                     },
 					DateDblDigit: function(){
                         var date = new Date();
@@ -198,11 +233,17 @@ var library = (function() {
                 return zeroString.concat(monthString); 
             },
 			AbrOfCurrentMonth: function(){
-                var monthAbbr = 'Mar';
-                return monthAbbr;
+                var monAbbArray = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var date = new Date();
+                var month = date.getMonth();
+                var monthAbv = monAbbArray[month];
+                return monthAbv;
             },
 			CurrentMonth: function(){
-                var monthName = 'March';
+                var monthArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                var date = new Date();
+                var month = date.getMonth();
+                var monthName = monthArray[month];
                 return monthName;
             }
 		}
@@ -221,8 +262,23 @@ var library = (function() {
                     },
 					Ordinal: function(){
                         var daysPassed = library.Year.DayOfYear.Numeral();
-                        var ord = 'st';
-                        return String(daysPassed).concat(ord);
+                        var lastDig = daysPassed.slice(-1);
+                        switch (lastDig) {
+                            case '1':
+                                return daysPassed.concat('st');
+                                break;
+                            case '2':
+                                return daysPassed.concat('nd');
+                                break;
+                            case '3':
+                                return daysPassed.concat('rd');
+                                break;
+                            default:
+                                return daysPassed.concat('th');
+                                break;
+                            
+                        }
+                        
                     }
 				}
 			})(),
@@ -245,9 +301,14 @@ var library = (function() {
         var month = library.Month.MonthNumberDblDigit();
         var day = library.Month.DateOfMonth.DateDblDigit();
         var hour = library.Hour.TwentyFourHour();
+        var numHour = parseInt(hour, 10);
         var min = library.Minute.DblDigit();
         var sec = library.Second.DblDigit();
+        if (numHour < 10){
+            return year.concat('-',month,'-',day,'T','0',hour,':',min,':',sec);
+        } else {
         return year.concat('-',month,'-',day,'T',hour,':',min,':',sec);
+        }
     }
   }
 })();
