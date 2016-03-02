@@ -154,7 +154,12 @@ var library = (function() {
                 var dayOfWeek = date.getDay();
                 return firstTwo[dayOfWeek];
             },
-			WeekOfYear: function(){}
+			WeekOfYear: function(){
+                var daysThisYear = parseInt(library.Year.DayOfYear.Numeral(),10);
+                var weekDecimal = daysThisYear/7;
+                var weekStringUp = String(Math.ceil(weekDecimal));
+                return weekStringUp;
+            }
 		}
 	})(),
 	Month: (function(){
@@ -208,14 +213,16 @@ var library = (function() {
 				return {
 					Numeral: function(){
                         var date = new Date();
-                        var dayOfYear = date.getDate() + 60;
+                        var thenToYear = date.setFullYear(2016, 0, 1);
+                        var daysToThisYear = Math.floor(thenToYear/86400000);
+                        var today = Math.ceil(((new Date()).getTime())/86400000);
+                        var dayOfYear = today - daysToThisYear;
                         return String(dayOfYear);
                     },
 					Ordinal: function(){
-                        var date = new Date();
-                        var dayOfYear = date.getDate() + 60;
+                        var daysPassed = library.Year.DayOfYear.Numeral();
                         var ord = 'st';
-                        return String(dayOfYear).concat(ord);
+                        return String(daysPassed).concat(ord);
                     }
 				}
 			})(),
