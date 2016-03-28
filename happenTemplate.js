@@ -106,8 +106,7 @@ var library = (function() {
                     var adjustHour = hour - 12;
                     return String(adjustHour);
                 } else {
-                    var reAdjustHour = hour +12;
-                    return String(reAdjustHour);
+                    return String(hour);
                 }
                     
             },
@@ -215,8 +214,12 @@ var library = (function() {
 					DateDblDigit: function(){
                         var date = new Date();
                         var num = date.getDate();
+                        if (num < 10) {
                         var zeroString = '0';
                         return zeroString.concat(String(num));
+                        } else {
+                            return String(num);
+                        }
                     }
 				}
 			})(),
